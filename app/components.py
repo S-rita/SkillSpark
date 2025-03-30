@@ -47,3 +47,174 @@ def info_section():
         padding="4",
         border_radius="lg"
     )
+
+class SidebarToggle(rx.State):
+    expanded: bool = False
+    
+    def toggle_sidebar(self):
+        self.expanded = not self.expanded
+
+def sidebar():
+    return rx.vstack(
+        rx.text(
+            ">>",
+            color="#FEDC45",
+            font_weight="bold",
+            font_size="2em",
+            cursor="pointer",
+            on_click=SidebarToggle.toggle_sidebar
+        ),
+        rx.icon(
+            "home", 
+            font_size="40px",
+            color="white",
+            cursor="pointer"
+        ),
+        rx.icon(
+            "folder-closed", 
+            font_size="40px",
+            color="white",
+            cursor="pointer"
+        ),
+        rx.icon(
+            "calendar", 
+            font_size="40px",
+            color="white",
+            cursor="pointer"
+        ),
+        rx.divider(
+            bg="white",
+            width="85%",
+            height="3px",
+            cursor="pointer"
+        ),
+        rx.icon(
+            "git-fork", 
+            font_size="40px",
+            color="white",
+            cursor="pointer"
+        ), 
+        rx.icon(
+            "medal", 
+            font_size="40px",
+            color="white",
+            cursor="pointer"
+        ),
+        spacing="6",
+        align_items="center",
+        bg="#222",
+        padding_y="30px",
+        border_radius="md",
+        width=rx.cond(SidebarToggle.expanded, "300px", "100px"),
+        height="100vh",
+        transition="width 0.3s ease-in-out"
+    )
+
+def sidebar_expand():
+    return rx.vstack(
+        rx.hstack(
+            rx.text(
+                "SkillSpark",
+                color="#FEDC45",
+                font_weight="bold",
+                font_size="1em",
+            ),
+            rx.text(
+                "<<",
+                color="#FEDC45",
+                font_weight="bold",
+                font_size="1em",
+                cursor="pointer",
+                on_click=SidebarToggle.toggle_sidebar
+            ),
+        ),
+        rx.hstack(
+            rx.icon(
+                "home", 
+                font_size="40px",
+                color="white",
+                cursor="pointer"
+            ),
+            rx.text(
+                "Home",
+                color="white",
+                font_weight="bold",
+                font_size="1em",
+                cursor="pointer",
+            ),
+        ),
+        rx.hstack(
+            rx.icon(
+                "folder-closed", 
+                font_size="40px",
+                color="white",
+                cursor="pointer"
+            ),
+            rx.text(
+                "Your Library",
+                color="white",
+                font_weight="bold",
+                font_size="1em",
+                cursor="pointer",
+            ),
+        ),
+        rx.hstack(
+            rx.icon(
+                "calendar", 
+                font_size="40px",
+                color="white",
+                cursor="pointer"
+            ),
+            rx.text(
+                "Your Streaks",
+                color="white",
+                font_weight="bold",
+                font_size="1em",
+                cursor="pointer",
+            ),
+        ),
+        rx.divider(
+            bg="white",
+            width="85%",
+            height="3px",
+            cursor="pointer"
+        ),
+        rx.hstack(
+            rx.icon(
+                "git-fork", 
+                font_size="40px",
+                color="white",
+                cursor="pointer"
+            ),
+            rx.text(
+                "MindMaps",
+                color="white",
+                font_weight="bold",
+                font_size="1em",
+                cursor="pointer",
+            ),
+        ),
+        rx.hstack(
+            rx.icon(
+                "medal", 
+                font_size="40px",
+                color="white",
+                cursor="pointer"
+            ),
+            rx.text(
+                "Contests",
+                color="white",
+                font_weight="bold",
+                font_size="1em",
+                cursor="pointer",
+            ),
+        ),
+        spacing="6",
+        align_items="center",
+        bg="#222",
+        padding_y="30px",
+        border_radius="md",
+        width=rx.cond(SidebarToggle.expanded, "300px", "100px"),
+        height="100vh",
+        transition="width 0.3s ease-in-out"
+    )
