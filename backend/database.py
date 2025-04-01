@@ -1,6 +1,8 @@
 import bcrypt
 import asyncio
 from motor.motor_asyncio import AsyncIOMotorClient
+from datetime import date
+from bson import ObjectId
 
 MONGO_URI = "mongodb://localhost:27017"
 client = AsyncIOMotorClient(MONGO_URI)
@@ -27,9 +29,23 @@ async def authenticate_user(username, password):
         return True
     return False
 
+# async def create_contest(creator, name, start, end, members, description):
+#     contest_data = {
+#         "contest_name": name,
+#         "creator_id": creator,
+#         "created_date": date.today(),
+#         "start_date": start,
+#         "final_date": end,
+#         "mindmap_ids": [],
+#         "participant_ids": members,
+#         "description": description
+#     }
+#     await contests_collection.insert_one(contest_data)
+    
 def run_async(func, *args):
     loop = asyncio.new_event_loop()
     asyncio.set_event_loop(loop)
     result = loop.run_until_complete(func(*args))
     loop.close()
     return result
+
