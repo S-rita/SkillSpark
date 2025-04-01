@@ -17,7 +17,9 @@ class User(BaseModel):
     user_id: Optional[str] = None
 
 class MindMap(BaseModel):
+    mindmap_id: str
     mindmap_name: str
+    created_date: str
     creator_id: str
     accessibility: bool
     topic_ids: List[str] = []
@@ -30,16 +32,16 @@ class Topic(BaseModel):
 class Contest(BaseModel):
     contest_name: str
     creator_id: str
-    created_date: date
-    start_date: date
-    final_date: date
-    mindmap_ids: List[str] = []
-    participant_ids: List[str] = [] 
+    created_date: str
+    start_date: str
+    final_date: str
+    mindmap_ids: List[str]
+    participant_ids: List[str]
+    description: str
 
 class Folder(BaseModel):
     folder_name: str
     owner_id: str
-    accessibility: bool
     mindmap_ids: List[str] = []
 
 class Achievement(BaseModel):

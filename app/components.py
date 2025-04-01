@@ -48,170 +48,189 @@ def info_section():
         border_radius="lg"
     )
 
+
 class SidebarToggle(rx.State):
     expanded: bool = False
     
     def toggle_sidebar(self):
         self.expanded = not self.expanded
 
+def sidebar_view():
+    return rx.cond(
+        SidebarToggle.expanded,
+        sidebar_expand(),
+        sidebar()
+    )
+
 def sidebar():
+    def icon_box(icon_src, href="/dashboard", width="40px"): # go to
+        return rx.link(
+            rx.box(
+            rx.image(src=icon_src, width=width, cursor="pointer"),
+            border_radius="15px",
+            padding="12px",
+            _hover={"bg": "#3a3a3a"},
+            transition="all 0.2s"
+            ),
+            href=href
+        )
+
     return rx.vstack(
-        rx.text(
-            ">>",
-            color="#FEDC45",
-            font_weight="bold",
-            font_size="2em",
-            cursor="pointer",
-            on_click=SidebarToggle.toggle_sidebar
+        rx.box(
+            rx.image(
+                src="/arrow_right.svg",
+                width="36px",
+                cursor="pointer",
+                on_click=SidebarToggle.toggle_sidebar
+            ),
+            border_radius="md",
+            padding="8px",
+            transition="all 0.2s"
         ),
-        rx.icon(
-            "home", 
-            font_size="40px",
-            color="white",
-            cursor="pointer"
+        rx.box(
+            rx.image(src="/homepage_icon.svg", width="50px", cursor="pointer"), # go to
+            border_radius="15px",
+            padding="8px",
+            _hover={"bg": "#3a3a3a"},
+            transition="all 0.2s"
         ),
-        rx.icon(
-            "folder-closed", 
-            font_size="40px",
-            color="white",
-            cursor="pointer"
+        icon_box("/library_icon.svg", "/library"),
+        icon_box("/streak_icon.svg"),
+        rx.divider(bg="white", width="85%", height="3px"),
+        rx.link(
+        rx.box(
+            rx.image(src="/sb_mindmap_icon.svg", width="40px", height="45px", cursor="pointer"),
+            border_radius="15px",
+            padding="10px",
+            _hover={"bg": "#3a3a3a"},
+            transition="all 0.2s",     
         ),
-        rx.icon(
-            "calendar", 
-            font_size="40px",
-            color="white",
-            cursor="pointer"
+        href="/" # go to
         ),
-        rx.divider(
-            bg="white",
-            width="85%",
-            height="3px",
-            cursor="pointer"
-        ),
-        rx.icon(
-            "git-fork", 
-            font_size="40px",
-            color="white",
-            cursor="pointer"
-        ), 
-        rx.icon(
-            "medal", 
-            font_size="40px",
-            color="white",
-            cursor="pointer"
-        ),
-        spacing="6",
+        icon_box("/contest_icon.svg", "/contest"),
+        spacing="7",
         align_items="center",
-        bg="#222",
+        bg="#282629",
         padding_y="30px",
         border_radius="md",
         width=rx.cond(SidebarToggle.expanded, "300px", "100px"),
         height="100vh",
         transition="width 0.3s ease-in-out"
     )
-
+    
 def sidebar_expand():
     return rx.vstack(
+        # Header with logo and toggle
         rx.hstack(
-            rx.text(
-                "SkillSpark",
-                color="#FEDC45",
-                font_weight="bold",
-                font_size="1em",
-            ),
-            rx.text(
-                "<<",
-                color="#FEDC45",
-                font_weight="bold",
-                font_size="1em",
+            rx.image(src="/logo_w_name.svg", width="180px", margin_left="10px"),
+            rx.image(
+                src="/arrow_left.svg",
+                width="36px",
                 cursor="pointer",
                 on_click=SidebarToggle.toggle_sidebar
             ),
+            align_items="center",
+            width="100%",
+            padding_x="16px",
+            margin_bottom="-10px"
         ),
-        rx.hstack(
-            rx.icon(
-                "home", 
-                font_size="40px",
-                color="white",
-                cursor="pointer"
+
+        # Individual nav rows
+        rx.link(
+            rx.box(
+                rx.hstack(
+                    rx.image(src="/homepage_icon.svg", width="50px", cursor="pointer"),
+                    rx.text("Home", color="white", font_size="1.6em", cursor="pointer", margin_left="5px"),
+                    gap="12px",
+                    align_items="center",
+                    width="100%",
+                    padding_x="20px"
+                ),
+                padding_y="6px",
+                _hover={"bg": "#3a3a3a","margin_left":"20px"},
+                transition="all 0.2s",
+                border_radius="15px"
             ),
-            rx.text(
-                "Home",
-                color="white",
-                font_weight="bold",
-                font_size="1em",
-                cursor="pointer",
-            ),
+            href="/"
         ),
-        rx.hstack(
-            rx.icon(
-                "folder-closed", 
-                font_size="40px",
-                color="white",
-                cursor="pointer"
+
+        rx.link(
+            rx.box(
+                rx.hstack(
+                    rx.image(src="/library_icon.svg", width="40px", cursor="pointer"),
+                    rx.text("Your Library", color="white", font_size="1.6em", cursor="pointer", margin_left="5px"),
+                    gap="15px",
+                    align_items="center",
+                    width="100%",
+                    padding_x="25px",
+                ),
+                padding_y="10px",
+                _hover={"bg": "#3a3a3a","margin_left":"20px"},
+                transition="all 0.2s",
+                border_radius="15px"
             ),
-            rx.text(
-                "Your Library",
-                color="white",
-                font_weight="bold",
-                font_size="1em",
-                cursor="pointer",
-            ),
+            href="/library"
         ),
-        rx.hstack(
-            rx.icon(
-                "calendar", 
-                font_size="40px",
-                color="white",
-                cursor="pointer"
+        
+        rx.link(
+            rx.box(
+                rx.hstack(
+                    rx.image(src="/streak_icon.svg", width="40px", cursor="pointer"),
+                    rx.text("Your Streaks", color="white", font_size="1.6em", cursor="pointer", margin_left="5px"),
+                    gap="12px",
+                    align_items="center",
+                    width="100%",
+                    padding_x="25px"
+                ),
+                padding_y="10px",
+                _hover={"bg": "#3a3a3a","margin_left":"20px"},
+                transition="all 0.2s",
+                border_radius="15px"
             ),
-            rx.text(
-                "Your Streaks",
-                color="white",
-                font_weight="bold",
-                font_size="1em",
-                cursor="pointer",
-            ),
+            href="/"
         ),
-        rx.divider(
-            bg="white",
-            width="85%",
-            height="3px",
-            cursor="pointer"
+
+        rx.divider(bg="white", width="85%", height="3px", margin_left="15px"),
+
+        rx.link(
+            rx.box(
+                rx.hstack(
+                    rx.image(src="/sb_mindmap_icon.svg", width="40px", cursor="pointer"),
+                    rx.text("MindMaps", color="white", font_size="1.6em", cursor="pointer", margin_left="5px"),
+                    gap="12px",
+                    align_items="center",
+                    width="100%",
+                    padding_x="25px"
+                ),
+                padding_y="10px",
+                _hover={"bg": "#3a3a3a","margin_left":"20px"},
+                transition="all 0.2s",
+                border_radius="15px"
+            ),
+            href="/"
         ),
-        rx.hstack(
-            rx.icon(
-                "git-fork", 
-                font_size="40px",
-                color="white",
-                cursor="pointer"
+
+        rx.link(
+            rx.box(
+                rx.hstack(
+                    rx.image(src="/contest_icon.svg", width="40px", cursor="pointer"),
+                    rx.text("Contests", color="white", font_size="1.6em", cursor="pointer", margin_left="5px"),
+                    gap="12px",
+                    align_items="center",
+                    width="100%",
+                    padding_x="25px"
+                ),
+                padding_y="10px",
+                _hover={"bg": "#3a3a3a","margin_left":"20px"},
+                transition="all 0.2s",
+                border_radius="15px"
             ),
-            rx.text(
-                "MindMaps",
-                color="white",
-                font_weight="bold",
-                font_size="1em",
-                cursor="pointer",
-            ),
+            href = "/contest"
         ),
-        rx.hstack(
-            rx.icon(
-                "medal", 
-                font_size="40px",
-                color="white",
-                cursor="pointer"
-            ),
-            rx.text(
-                "Contests",
-                color="white",
-                font_weight="bold",
-                font_size="1em",
-                cursor="pointer",
-            ),
-        ),
-        spacing="6",
-        align_items="center",
-        bg="#222",
+        
+        spacing="7",
+        align_items="start",
+        bg="#282629",
         padding_y="30px",
         border_radius="md",
         width=rx.cond(SidebarToggle.expanded, "300px", "100px"),

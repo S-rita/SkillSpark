@@ -84,7 +84,9 @@ async def get_topics():
 # CONTESTS
 @app.post("/contests/")
 async def create_contest(contest: Contest):
-    result = await contests_collection.insert_one(contest.model_dump())
+    contest_dict = contest.model_dump()
+    print("📦 Received contest:", contest_dict)
+    result = await contests_collection.insert_one(contest_dict)
     return {"message": "Contest created", "contest_id": str(result.inserted_id)}
 
 @app.get("/contests/", response_model=List[Contest])
@@ -103,3 +105,16 @@ async def get_achievements():
 async def get_streaks():
     streaks = await streaks_collection.find().to_list(100)
     return [to_str_id(streak) for streak in streaks]
+
+# FOLDERS
+@app.post("/folders/")
+async def create_folder(folder: Folder):
+    folder_dict = folder.model_dump()
+    print("📦 Received folder:", folder_dict)
+    result = await folders_collection.insert_one(folder_dict)
+    return {"message": "Folder created"}
+
+@app.get("/folders/", response_model=List[Folder])
+async def get_folders():
+    folders = await folders_collection.find().to_list(100)
+    return [to_str_id(folder) for folder in folders]
