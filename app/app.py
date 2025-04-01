@@ -1,8 +1,8 @@
 import reflex as rx
-from app.pages.landing import landing_page
-from app.pages.login import login_page
-from app.pages.signup import signup_page
-from app.pages.main import main_page
+# from app.pages.landing import landing_page
+# from app.pages.login import login_page
+# from app.pages.signup import signup_page
+# from app.pages.main import main_page
 from app.pages.Main_page import index_main as Entire_page_main
 from app.pages.Achievements import Achievements_page
 from app.pages.searching import searching_page
