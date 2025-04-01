@@ -201,25 +201,25 @@ class Main_Pages_state(rx.State):
             "name": "Chinese Sentences",
             "terms": 27,
             "creator": "Sarita",
-            "image": "/mindmap.png"
+            "image": "/mindmaptail.png"
         },
         {
             "name": "German Sentences", 
             "terms": 27,
             "creator": "Sarita",
-            "image": "/mindmap.png"
+            "image": "/mindmaptail.png"
         },
         {
             "name": "Python Programming",
             "terms": 109, 
             "creator": "Sarita",
-            "image": "/mindmap.png"
+            "image": "/mindmaptail.png"
         },
         {
             "name": "I Love AI",
             "terms": 12,
             "creator": "Sarita", 
-            "image": "/mindmap.png"
+            "image": "/mindmaptail.png"
         }
     ]
 
