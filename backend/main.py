@@ -76,6 +76,69 @@ async def create_topic(topic: Topic):
     result = await topics_collection.insert_one(topic.model_dump())
     return {"message": "Topic created", "topic_id": str(result.inserted_id)}
 
+@app.post("/topics/update_parent")
+async def update_topic_parent(data: dict):
+    topic_id = data.get("topic_id")
+    parent_id = data.get("parent_id")
+    
+    if not topic_id:
+        raise HTTPException(status_code=400, detail="topic_id is required")
+        
+    # Convert string IDs to ObjectId if necessary
+    try:
+        topic_id_obj = ObjectId(topic_id)
+    except:
+        raise HTTPException(status_code=400, detail="Invalid topic_id format")
+        
+    # Convert parent_id to ObjectId if it's not None
+    parent_id_obj = None
+    if parent_id:
+        try:
+            parent_id_obj = ObjectId(parent_id)
+        except:
+            raise HTTPException(status_code=400, detail="Invalid parent_id format")
+    
+    # Update the topic with the new parent_id
+    result = await topics_collection.update_one(
+        {"_id": topic_id_obj},
+        {"$set": {"parent_id": parent_id_obj}}
+    )
+    
+    if result.modified_count == 0:
+        # Check if the topic exists but wasn't modified
+        topic = await topics_collection.find_one({"_id": topic_id_obj})
+        if not topic:
+            raise HTTPException(status_code=404, detail="Topic not found")
+    
+    return {"message": "Topic parent updated successfully"}
+
+@app.put("/topics/{topic_id}")
+async def update_topic(topic_id: str, topic_update: dict):
+    try:
+        topic_id_obj = ObjectId(topic_id)
+    except:
+        raise HTTPException(status_code=400, detail="Invalid topic_id format")
+    
+    # Convert any string ObjectIds to actual ObjectIds
+    if "parent_id" in topic_update and topic_update["parent_id"]:
+        try:
+            topic_update["parent_id"] = ObjectId(topic_update["parent_id"])
+        except:
+            raise HTTPException(status_code=400, detail="Invalid parent_id format")
+    
+    result = await topics_collection.update_one(
+        {"_id": topic_id_obj},
+        {"$set": topic_update}
+    )
+    
+    if result.modified_count == 0:
+        # Check if the document exists
+        topic = await topics_collection.find_one({"_id": topic_id_obj})
+        if not topic:
+            raise HTTPException(status_code=404, detail="Topic not found")
+    
+    return {"message": "Topic updated successfully"}
+
 @app.get("/topics/", response_model=List[Topic])
 async def get_topics():
     topics = await topics_collection.find().to_list(100)

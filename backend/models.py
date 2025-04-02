@@ -18,13 +18,15 @@ class User(BaseModel):
 
 class MindMap(BaseModel):
     mindmap_name: str
+    mindmap_description: str
     creator_id: str
     accessibility: bool
     topic_ids: List[str] = []
 
 class Topic(BaseModel):
     topic_name: str
-    description: str
+    parent_id: Optional[str] = None
+    depth: int
     topic_id: Optional[str] = None
 
 class Contest(BaseModel):
